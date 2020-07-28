@@ -1,18 +1,24 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API\V1;
 
+use App\Http\Requests\CreateProductAPIRequest;
+use App\Http\Requests\UpdateProductAPIRequest;
 use App\Product;
 use App\Services\ProductService;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Routing\Controller;
 
+/**
+ * Class ProductAPIController
+ * @package App\Http\Controllers\API\V1
+ */
 class ProductAPIController extends Controller
 {
     /**
      * @var ProductService
      */
-    private ProductService $productService;
+    private $productService;
 
     /**
      * ProductAPIController constructor.
@@ -36,10 +42,10 @@ class ProductAPIController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param CreateProductAPIRequest $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(CreateProductAPIRequest $request)
     {
         return $this->productService->store($request);
     }
@@ -58,11 +64,11 @@ class ProductAPIController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param UpdateProductAPIRequest $request
      * @param Product $product
      * @return Response
      */
-    public function update(Request $request, Product $product)
+    public function update(UpdateProductAPIRequest $request, Product $product)
     {
         return $this->productService->update($request, $product);
     }

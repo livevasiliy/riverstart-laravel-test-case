@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('v1')->group(function () {
+    Route::apiResource('products', 'API\V1\ProductAPIController')
+        ->except('show');
+
+    Route::apiResource('categories', 'API\V1\CategoryAPIController')
+        ->except([ 'show', 'update']);
 });
