@@ -29,6 +29,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Product whereSort($value)
  * @method static Builder|Product whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property bool $is_deleted
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Product whereIsDeleted($value)
  */
 class Product extends Model
 {

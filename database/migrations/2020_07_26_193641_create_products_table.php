@@ -15,11 +15,11 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->boolean('is_published')->default(false);
-            $table->boolean('is_deleted')->default(false);
+            $table->string('name')->index();
+            $table->boolean('is_published')->default(false)->index();
+            $table->boolean('is_deleted')->default(false)->index();
             $table->unsignedInteger('sort')->default(500);
-            $table->unsignedDecimal('price', 8,2);
+            $table->unsignedDecimal('price', 8,2)->index();
             $table->timestamps();
         });
     }

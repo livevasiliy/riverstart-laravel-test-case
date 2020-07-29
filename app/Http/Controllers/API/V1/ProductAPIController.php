@@ -6,6 +6,7 @@ use App\Http\Requests\CreateProductAPIRequest;
 use App\Http\Requests\UpdateProductAPIRequest;
 use App\Services\ProductService;
 use Illuminate\Routing\Controller;
+use Illuminate\Http\Request;
 
 /**
  * Class ProductAPIController
@@ -30,11 +31,13 @@ class ProductAPIController extends Controller
 	/**
 	 * Display a listing of the resource.
 	 *
+	 * @param  Request  $request
+	 *
 	 * @return \Illuminate\Http\JsonResponse
 	 */
-    final public function index(): \Illuminate\Http\JsonResponse
+    final public function index(Request $request): \Illuminate\Http\JsonResponse
 	{
-        return $this->productService->index();
+        return $this->productService->index($request);
     }
 	
 	/**

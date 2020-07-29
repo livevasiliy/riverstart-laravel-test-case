@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateProductAPIRequest;
 use App\Http\Resources\ProductCollection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Http\Request;
 
 class ProductService
 {
@@ -30,11 +31,13 @@ class ProductService
 	}
 	
 	/**
+	 * @param  Request  $request
+	 *
 	 * @return \Illuminate\Http\JsonResponse
 	 */
-	final public function index(): JsonResponse
+	final public function index(Request $request): JsonResponse
 	{
-		$products = new ProductCollection($this->productRepository->listProducts());
+		$products = $this->productRepository->listProducts($request->query());
 		
 		return response()->json($products, Response::HTTP_OK);
 	}
