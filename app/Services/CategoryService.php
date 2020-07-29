@@ -31,7 +31,7 @@ class CategoryService
 	 */
 	final public function index(): JsonResponse
     {
-		$categories = new CategoryCollection($this->categoryRepository->allCategories([
+		$categories = new CategoryCollection($this->categoryRepository->listCategories([
 			'id',
 			'name',
 			'active',
@@ -59,7 +59,7 @@ class CategoryService
 
     final public function show(int $id): JsonResponse
     {
-		$category = $this->categoryRepository->findByIdCategory($id);
+		$category = $this->categoryRepository->findCategoryById($id);
 		
 		if ($category === null) {
 			return response()->json([], Response::HTTP_NOT_FOUND);
@@ -76,13 +76,13 @@ class CategoryService
 	 */
     final public function update(int $id, UpdateCategoryAPIRequest $request): JsonResponse
     {
-		$category = $this->categoryRepository->findByIdCategory($id);
+		$category = $this->categoryRepository->findCategoryById($id);
 	
 		if ($category === null) {
 			return response()->json([], Response::HTTP_NOT_FOUND);
 		}
 		
-		$category = $this->categoryRepository->updateCategory($id, $request->all());
+		$category = $this->categoryRepository->updateCategory($request->all(), $id);
 		
 		if ($category === null) {
 			return response()->json([], Response::HTTP_BAD_REQUEST);
@@ -99,7 +99,7 @@ class CategoryService
 	 */
     final public function destroy(int $id): JsonResponse
     {
-		$category = $this->categoryRepository->findByIdCategory($id);
+		$category = $this->categoryRepository->findCategoryById($id);
 	
 		if ($category === null) {
 			return response()->json(new CategoryCollection([]), Response::HTTP_NOT_FOUND);
@@ -109,7 +109,7 @@ class CategoryService
 			return response()->json([], Response::HTTP_BAD_REQUEST);
 		}
 	
-		$categories = $this->categoryRepository->allCategories([
+		$categories = $this->categoryRepository->listCategories([
 			'id',
 			'name',
 			'active',

@@ -16,8 +16,9 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->boolean('is_published');
-            $table->unsignedInteger('sort');
+            $table->boolean('is_published')->default(false);
+            $table->boolean('is_deleted')->default(false);
+            $table->unsignedInteger('sort')->default(500);
             $table->unsignedDecimal('price', 8,2);
             $table->timestamps();
         });

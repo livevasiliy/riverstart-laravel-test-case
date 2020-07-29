@@ -6,39 +6,63 @@ namespace App\Repository;
 
 use App\Category;
 use App\Contracts\CategoryContract;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 
 class CategoryRepository extends BaseRepository implements CategoryContract
 {
+	/**
+	 * {@inheritDoc}
+	 */
 	public function __construct(Category $model)
 	{
 		parent::__construct($model);
 		$this->model = $model;
 	}
 	
-	final public function allCategories(array $columns = ['*']): Collection
-	{
-		return $this->all($columns);
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public function listCategories(
+		array $columns = ['*'],
+		string $order = 'id',
+		string $sort = 'desc'
+	): \Illuminate\Database\Eloquent\Collection {
+		return $this->all($columns, $order, $sort);
 	}
 	
-	final public function paginateCategories(int $perPage, array $columns, int $page): LengthAwarePaginator
+	/**
+	 * {@inheritDoc}
+	 */
+	public function findCategoryById(int $id): ?Category
 	{
-		return $this->model->orderByDesc('id')->paginate($perPage, $columns, $page);
+		return $this->find($id);
 	}
 	
-	final public function createCategory(array $params): ?Category
+	/**
+	 * {@inheritDoc}
+	 */
+	public function createCategory(array $params): Category
 	{
-		return $this->model->create($params);
+		return $this->create($params);
 	}
 	
-	final public function updateCategory(int $id, array $params): ?Category
+	/**
+	 * {@inheritDoc}
+	 */
+	public function updateCategory(array $params, int $id): Category
 	{
-		return $this->model->find($id)->fill($params);
+		return $this->update($params, $id);
 	}
 	
-	final public function findByIdCategory(int $id, array $columns = ['*']): ?Category
+	/**
+	 * {@inheritDoc}
+	 */
+	public function deleteCategory(int $id): bool
 	{
-		return $this->model->whereId($id)->first($columns);
+		try {
+			return $this->delete($id);
+		} catch (\Exception $e) {
+			return false;
+		}
 	}
 }

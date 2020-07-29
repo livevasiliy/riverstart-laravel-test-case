@@ -3,80 +3,59 @@
 
 namespace App\Contracts;
 
-
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use App\Product;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 
+/**
+ * Interface ProductContract
+ *
+ * @package App\Contracts
+ */
 interface ProductContract
 {
-	/**
-	 * Get collection all records.
-	 *
-	 * Получить коллекцию всех записей.
-	 *
-	 * @param  array|string[]  $columns
-	 *
-	 * @return Collection
-	 */
-	public function allProducts(array $columns = ['*']): Collection;
-	
-	/**
-	 * Get paginate collection all records.
-	 *
-	 * Получить коллекцию всех записей с пагинацей.
-	 *
-	 * @param  int  $perPage
-	 * @param  int  $page
-	 *
-	 * @return LengthAwarePaginator
-	 */
-	public function paginateProducts(int $perPage, int $page): LengthAwarePaginator;
-	
-	/**
-	 * Create new instance model.
-	 *
-	 * Создать новый экземпляр модели.
-	 *
-	 * @param  array  $params
-	 *
-	 * @return null|Product
-	 */
-	public function createProduct(array $params): ?Product;
-	
-	/**
-	 * Update model by the given ID.
-	 *
-	 * Обновить модель по заданному ID.
-	 *
-	 * @param  array  $params
-	 * @param  int    $id
-	 *
-	 * @return null|Product
-	 */
-	public function updateProduct(int $id, array $params): ?Product;
-	
-	/**
-	 * Find model by a specific column.
-	 *
-	 * Найти модель по конкретному столбцу.
-	 *
-	 * @param  array           $params
-	 * @param  array|string[]  $columns
-	 *
-	 * @return null|Product
-	 */
-	public function findByProduct(array $params, array $columns = ['*']): ?Product;
-	
-	/**
-	 * Find model by the given ID.
-	 *
-	 * Найти модель по заданному ID.
-	 *
-	 * @param  int             $id
-	 * @param  array|string[]  $columns
-	 *
-	 * @return null|Product
-	 */
-	public function findByIdProduct(int $id, array $columns = ['*']): ?Product;
+    /**
+     * @param  array   $columns
+     * @param  string  $order
+     * @param  string  $sort
+     *
+     * @return mixed
+     */
+    public function listProducts(array $columns = ['*'], string $order = 'id', string $sort = 'desc'): Collection;
+    
+    /**
+     * @param  int  $id
+     *
+     * @return Product
+     */
+    public function findProductById(int $id): ?Product;
+    
+    /**
+     * @param  array  $params
+     *
+     * @return Product
+     */
+    public function createProduct(array $params): Product;
+    
+    /**
+     * @param  array  $params
+     * @param  int    $id
+     *
+     * @return Product
+     */
+    public function updateProduct(array $params, int $id): Product;
+    
+    /**
+     * @param  int  $id
+     *
+     * @return bool
+     */
+    public function deleteProduct(int $id): bool;
+    
+    /**
+     * @param  array  $data
+     *
+     * @return Model
+     */
+    public function findProductBy(array $data): Model;
 }

@@ -3,97 +3,98 @@
 
 namespace App\Contracts;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Collection;
 
-/***
+use Exception;
+
+/**
  * Interface BaseContract
  *
  * @package App\Contracts
  */
 interface BaseContract
 {
-	/**
-	 * Get collection all records
-	 *
-	 * @param  array|string[]  $columns
-	 *
-	 * @return Collection
-	 */
-	public function all(array $columns = ['*']): Collection;
-	
-	/**
-	 * Get paginate collection all records
-	 *
-	 * @param  int             $perPage
-	 * @param  array|string[]  $columns
-	 * @param  string          $pageName
-	 * @param  int             $page
-	 *
-	 * @return Paginator
-	 */
-	public function paginate(
-		int $perPage = 15,
-		array $columns = ['*'],
-		string $pageName = 'data',
-		int $page = 1
-	): Paginator;
-	
-	/**
-	 * Create new instance model
-	 *
-	 * @param  array  $params
-	 *
-	 * @return Model|null
-	 */
-	public function create(array $params): ?Model;
-	
-	/**
-	 * Find model by the given ID
-	 *
-	 * @param  int  $id
-	 *
-	 * @return Model|null
-	 */
-	public function show(int $id): ?Model;
-	
-	/**
-	 * Update model by the given ID
-	 *
-	 * @param  array  $params
-	 * @param  int    $id
-	 *
-	 * @return bool
-	 */
-	public function update(int $id, array $params): bool;
-	
-	/**
-	 * Delete model by the given ID
-	 *
-	 * @param  int  $id
-	 *
-	 * @return bool
-	 */
-	public function delete(int $id): bool;
-	
-	/**
-	 * Find model by a specific column
-	 *
-	 * @param  array           $params
-	 * @param  array|string[]  $columns
-	 *
-	 * @return Model|null
-	 */
-	public function findBy(array $params, array $columns = ['*']): ?Model;
-	
-	/**
-	 * Find model by ID
-	 *
-	 * @param  int             $id
-	 * @param  array|string[]  $columns
-	 *
-	 * @return Model|null
-	 */
-	public function find(int $id, array $columns = ['*']): ?Model;
+    /**
+     * Create a model instance
+     *
+     * @param  array  $attributes
+     *
+     * @return mixed
+     */
+    public function create(array $attributes);
+
+    /**
+     * Update a model instance
+     *
+     * @param  array  $attributes
+     * @param  int    $id
+     *
+     * @return mixed
+     */
+    public function update(array $attributes, int $id);
+
+    /**
+     * Return all model rows
+     *
+     * @param  array   $columns
+     * @param  string  $orderBy
+     * @param  string  $sortBy
+     *
+     * @return mixed
+     */
+    public function all($columns = array('*'), string $orderBy = 'id', string $sortBy = 'desc');
+
+    /**
+     * Find one by ID
+     *
+     * @param  int  $id
+     *
+     * @return mixed
+     */
+    public function find(int $id);
+
+    /**
+     * Find one by ID or throw exception
+     *
+     * @param  int  $id
+     *
+     * @return mixed
+     */
+    public function findOneOrFail(int $id);
+
+    /**
+     * Find based on a different column
+     *
+     * @param  array  $data
+     *
+     * @return mixed
+     */
+    public function findBy(array $data);
+
+    /**
+     * Find one based on a different column
+     *
+     * @param  array  $data
+     *
+     * @return mixed
+     */
+    public function findOneBy(array $data);
+
+    /**
+     * Find one based on a different column or through exception
+     *
+     * @param  array  $data
+     *
+     * @return mixed
+     */
+    public function findOneByOrFail(array $data);
+
+    /**
+     * Delete one by Id
+     *
+     * @param  int  $id
+     *
+     * @return mixed
+	 * @throws Exception
+     */
+    public function delete(int $id);
 }
