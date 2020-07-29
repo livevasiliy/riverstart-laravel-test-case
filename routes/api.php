@@ -19,5 +19,5 @@ Route::prefix('v1')->group(function () {
         ->except('show');
 
     Route::apiResource('categories', 'API\V1\CategoryAPIController')
-        ->except([ 'show', 'update']);
+        ->except(['index', 'show', 'update']);
 });
