@@ -6,6 +6,7 @@ use App\Contracts\CategoryContract;
 use App\Http\Requests\CreateCategoryAPIRequest;
 use App\Http\Requests\UpdateCategoryAPIRequest;
 use App\Http\Resources\CategoryCollection;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
@@ -30,7 +31,7 @@ class CategoryService
 	 * @return \Illuminate\Http\JsonResponse
 	 */
 	final public function index(): JsonResponse
-    {
+	{
 		$categories = new CategoryCollection($this->categoryRepository->listCategories([
 			'id',
 			'name',
@@ -39,15 +40,15 @@ class CategoryService
 		]));
 		
 		return response()->json($categories, Response::HTTP_OK);
-    }
+	}
 	
 	/**
 	 * @param  \App\Http\Requests\CreateCategoryAPIRequest  $request
 	 *
 	 * @return \Illuminate\Http\JsonResponse
 	 */
-    final public function store(CreateCategoryAPIRequest $request): JsonResponse
-    {
+	final public function store(CreateCategoryAPIRequest $request): JsonResponse
+	{
 		$category = $this->categoryRepository->createCategory($request->all());
 		
 		if ($category === null) {
@@ -55,10 +56,10 @@ class CategoryService
 		}
 		
 		return response()->json($category, Response::HTTP_CREATED);
-    }
-
-    final public function show(int $id): JsonResponse
-    {
+	}
+	
+	final public function show(int $id): JsonResponse
+	{
 		$category = $this->categoryRepository->findCategoryById($id);
 		
 		if ($category === null) {
@@ -66,7 +67,7 @@ class CategoryService
 		}
 		
 		return response()->json($category, Response::HTTP_FOUND);
-    }
+	}
 	
 	/**
 	 * @param  int                                          $id
@@ -74,10 +75,10 @@ class CategoryService
 	 *
 	 * @return \Illuminate\Http\JsonResponse
 	 */
-    final public function update(int $id, UpdateCategoryAPIRequest $request): JsonResponse
-    {
+	final public function update(int $id, UpdateCategoryAPIRequest $request): JsonResponse
+	{
 		$category = $this->categoryRepository->findCategoryById($id);
-	
+		
 		if ($category === null) {
 			return response()->json([], Response::HTTP_NOT_FOUND);
 		}
@@ -89,7 +90,7 @@ class CategoryService
 		}
 		
 		return response()->json(CategoryCollection::make($category), Response::HTTP_OK);
-    }
+	}
 	
 	/**
 	 * @param  int  $id
@@ -97,18 +98,26 @@ class CategoryService
 	 * @return \Illuminate\Http\JsonResponse
 	 * @throws \Exception
 	 */
-    final public function destroy(int $id): JsonResponse
-    {
+	final public function destroy(int $id): JsonResponse
+	{
 		$category = $this->categoryRepository->findCategoryById($id);
-	
+		
 		if ($category === null) {
 			return response()->json(new CategoryCollection([]), Response::HTTP_NOT_FOUND);
 		}
 		
-		if ($category->delete() === false) {
-			return response()->json([], Response::HTTP_BAD_REQUEST);
+		$isDeleted = $category->delete();
+		
+		if ($isDeleted === false) {
+			return response()->json(
+				__('messages.error_delete',
+					['category' => $category->name],
+				'ru'
+				),
+				Response::HTTP_BAD_REQUEST
+			);
 		}
-	
+		
 		$categories = $this->categoryRepository->listCategories([
 			'id',
 			'name',
@@ -117,5 +126,5 @@ class CategoryService
 		]);
 		
 		return response()->json(new CategoryCollection($categories), Response::HTTP_OK);
-    }
+	}
 }

@@ -6,6 +6,7 @@ namespace App\Repository;
 
 use App\Category;
 use App\Contracts\CategoryContract;
+use Illuminate\Database\Eloquent\Collection;
 
 class CategoryRepository extends BaseRepository implements CategoryContract
 {
@@ -18,22 +19,21 @@ class CategoryRepository extends BaseRepository implements CategoryContract
 		$this->model = $model;
 	}
 	
-	
 	/**
 	 * {@inheritDoc}
 	 */
-	public function listCategories(
+	final public function listCategories(
 		array $columns = ['*'],
 		string $order = 'id',
 		string $sort = 'desc'
-	): \Illuminate\Database\Eloquent\Collection {
+	): Collection {
 		return $this->all($columns, $order, $sort);
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
-	public function findCategoryById(int $id): ?Category
+	final public function findCategoryById(int $id): ?Category
 	{
 		return $this->find($id);
 	}
@@ -41,7 +41,7 @@ class CategoryRepository extends BaseRepository implements CategoryContract
 	/**
 	 * {@inheritDoc}
 	 */
-	public function createCategory(array $params): Category
+	final public function createCategory(array $params): Category
 	{
 		return $this->create($params);
 	}
@@ -49,7 +49,7 @@ class CategoryRepository extends BaseRepository implements CategoryContract
 	/**
 	 * {@inheritDoc}
 	 */
-	public function updateCategory(array $params, int $id): Category
+	final public function updateCategory(array $params, int $id): Category
 	{
 		return $this->update($params, $id);
 	}
@@ -57,7 +57,7 @@ class CategoryRepository extends BaseRepository implements CategoryContract
 	/**
 	 * {@inheritDoc}
 	 */
-	public function deleteCategory(int $id): bool
+	final public function deleteCategory(int $id): bool
 	{
 		try {
 			return $this->delete($id);

@@ -2,9 +2,12 @@
 
 namespace App;
 
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Category
@@ -49,7 +52,10 @@ class Category extends Model
 	 */
 	public function products(): BelongsToMany
 	{
-		return $this->belongsToMany(Product::class, 'category_product')
-			->withPivotValue(['category_id', 'product_id']);
+		return $this->belongsToMany(Product::class,
+			'category_product',
+			'category_id',
+			'product_id'
+		)->withPivot(['category_id', 'product_id']);
 	}
 }

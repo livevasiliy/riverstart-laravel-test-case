@@ -48,9 +48,9 @@ interface ProductContract
     /**
      * @param  int  $id
      *
-     * @return bool
+     * @return Product
      */
-    public function deleteProduct(int $id): bool;
+    public function deleteProduct(int $id): Product;
     
     /**
      * @param  array  $data

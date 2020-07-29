@@ -11,10 +11,18 @@ class CategoryObserver
 	 *
 	 * @param  \App\Category  $category
 	 *
-	 * @return bool
+	 * @return bool|void
 	 */
-	final public function deleting(Category $category): bool
+	final public function deleting(Category $category)
 	{
+		$category->load('products');
+		
+		$products = $category->products()->wherePivot('category_id', '=', $category->id)->count();
+		
+		if ($products > 0) {
+			return false;
+		}
+		
 		return true;
 	}
 
@@ -27,6 +35,6 @@ class CategoryObserver
      */
     final public function forceDeleted(Category $category): bool
     {
-    	return true;
+    	return false;
     }
 }

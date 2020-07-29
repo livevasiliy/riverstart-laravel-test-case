@@ -55,7 +55,11 @@ class Product extends Model
 	 */
 	public function categories(): BelongsToMany
 	{
-		return $this->belongsToMany(Category::class, 'category_product')
-			->withPivotValue(['category_id', 'product_id']);
+		return $this->belongsToMany(
+			Category::class,
+			'category_product',
+		'product_id',
+			'category_id'
+		)->withPivot(['category_id', 'product_id']);
 	}
 }
